@@ -1,0 +1,6 @@
+import { z } from 'zod'
+export const deviceReadingSchema=z.object({deviceId:z.string().min(1).max(100),temperature:z.number().finite().min(-20).max(100),turbidity:z.number().finite().min(0).max(10000),timestamp:z.string().datetime(),waterSourceId:z.string().uuid()}).strict()
+export const manualSchema=z.object({waterSourceId:z.string().uuid(),value:z.number().finite().min(0),testedAt:z.string().datetime(),operatorName:z.string().max(120).optional(),notes:z.string().max(2000).optional()}).strict()
+export const pumpSchema=z.object({deviceId:z.string().uuid(),command:z.enum(['START','STOP'])}).strict()
+const wideImportSchema=z.object({labelColumn:z.string().min(1),dataStartRow:z.number().int().min(0).optional(),measures:z.array(z.object({column:z.string().min(1),parameter:z.string().min(1)})).min(1)}).strict()
+export const importSchema=z.object({sourceOrganization:z.enum(['CGWB','JJM-WQMIS','DATA.GOV.IN','OTHER_GOVERNMENT']),datasetName:z.string().min(1).max(250),datasetYear:z.string().max(30).optional(),sourceUrl:z.string().url().optional(),recordType:z.enum(['LABORATORY_MEASUREMENT','CONTAMINATION_SUMMARY','TESTING_STATISTIC']),mapping:z.record(z.string(),z.string()),headerRow:z.number().int().min(0).optional(),wide:wideImportSchema.optional()})

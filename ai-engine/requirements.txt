@@ -1,0 +1,7 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pandas>=2.0
+numpy>=1.26
+# NOTE: scikit-learn is intentionally NOT included. There is no validated ML
+# use case yet; adding it before a validated dataset/model would risk inventing
+# conclusions. It may be added when a real, labelled dataset exists.
