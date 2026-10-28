@@ -23,6 +23,28 @@ dist-ssr
 *.sln
 *.sw?
 .env
+.env.txt
 .continue/
 _pyscsche_/
 *.pyc
+
+# Secrets and local environment files
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+!.env.production.example
+service-account*.json
+firebase-adminsdk*.json
+*.pem
+*.key
+
+# Local databases and generated files
+*.sqlite
+*.sqlite3
+*.db
+coverage/
+
+# Local environment backup files
+.env.txt
+.env.backup

@@ -20,7 +20,7 @@ import { EvidenceComparison } from './components/EvidenceComparison'
 import { TreatmentVerification } from './components/TreatmentVerification'
 import { HistoricalCaseIntelPage } from './components/HistoricalCaseIntel'
 import {
-  CoverageRow, DemoBanner, EmptyState, ErrorState, Loading, Panel,
+  DemoBanner, EmptyState, ErrorState, Loading, Panel,
   DeviceStatusBadge, SensorCard, WaterQualityScore,
 } from './components/ui'
 import { fetchDatasets, fetchRecords, fetchSummary } from './providers/governmentProvider'
@@ -162,27 +162,6 @@ function TreatmentMethodPanel({ treatment, compact = false, showExecution = true
   )
 }
 
-function DiagnosticPanel({ decision }: { decision: WaterQualityDecision }): JSX.Element {
-  const treatment = decision.treatmentRecommendation
-  const primaryIssues = treatment.primaryIssues ?? []
-  return (
-    <section className="panel-grid">
-      <Panel title="Detected Water-Quality Issue" className="wide">
-        {primaryIssues.length > 0
-          ? <ul className="stat-list">{primaryIssues.map((problem) => (
-            <li key={problem.parameter}>
-              <b>{problem.displayName}</b> {problem.value ?? '—'} {problem.unit ?? ''} <span className="pill real">{problem.status}</span>
-              <br /><small>Standard: {problem.standard}. {problem.why}</small>
-            </li>
-          ))}</ul>
-          : <EmptyState title="No detected fault" hint="No measured current parameter is outside its registered standard." />}
-        <p className="helper"><b>Evidence status:</b> {treatment.evidenceSufficiency}</p>
-        <p className="helper"><b>Decision confidence:</b> {decision.confidence}</p>
-      </Panel>
-      <TreatmentMethodPanel treatment={treatment} />
-    </section>
-  )
-}
 function lastUpdated(current: CurrentReadings | null): string {
   if (!current?.timestamp) return '—'
   const age = Math.round((Date.now() - current.timestamp) / 1000)
@@ -207,7 +186,7 @@ function ExplainModal({ onClose, current, history, thresholds }: {
 }
 
 function Dashboard({ onNavigate }: { onNavigate?: (p: Page) => void }): JSX.Element {
-  const { current, history, alerts, snapshot, thresholds, loading, error, waterSource, sourceId, refresh, sourceMeta, deviceStatus, apiOnline, firebaseStatus, device } = useDashboard()
+  const { current, history, alerts, snapshot, thresholds, loading, error, waterSource, sourceId, refresh, sourceMeta, deviceStatus, apiOnline, firebaseStatus } = useDashboard()
   const decision = useCurrentDecision(sourceId)
   const trends = useMemo(() => detectTrends(history, thresholds), [history, thresholds])
   const [explainMode, setExplainMode] = useState(false)
